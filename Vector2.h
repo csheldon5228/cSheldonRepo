@@ -1,0 +1,8 @@
+//
+// Created by chris on 1/28/2026.
+//
+
+#ifndef CLIONPROJECTS_VECTOR2_H
+#define CLIONPROJECTS_VECTOR2_H
+
+#endif //CLIONPROJECTS_VECTOR2_H
