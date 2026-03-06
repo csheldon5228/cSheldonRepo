@@ -32,19 +32,14 @@ public:
         this->rent = rent;
     }
 
-    bool isEqual(MonopolySpace other) {
-        // Equal on all bases; name, color, value, and rent
-        if (other.propertyName == this->propertyName &&
-            other.propertyColor == this->propertyColor &&
-            other.value == this->value &&
-            other.rent == this->rent) {
+    bool isEqual(MonopolySpace other) { // Only on the basis of name
+        if (other.propertyName == this->propertyName ) {
             return true;
         }
         return false;
     }
 
     void print() {
-
         cout << "Name: " << this->propertyName << " | Color: " << this->propertyColor << " | Value: $" <<
             this->value << " | Rent: $" << this->rent << endl;
     }
@@ -241,8 +236,63 @@ public:
         // - Maintain circular link tail->next=head
         // - If playerNode points to deleted node, move playerNode to a safe node
         // - nodeCount--
+
+        // find node via checking if curr->next.name = name, check for head/tail, delete node accordingly
+        if (isEmpty()) {
+            return false;
+        }
+
+        Node<T> *temp = headNode;
+        if (nodeCount == 1) {
+            if (headNode->data.name == name) {
+                tailNode = nullptr;
+                headNode = nullptr;
+                playerNode = nullptr;
+                delete temp;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        int i = 0;
+        while (temp->nextNode->data.name != name) {
+            temp = temp->nextNode;
+            if (i > nodeCount) {
+                return false;
+            }
+            i++;
+        }
+        if (temp->nextNode == headNode) {
+            headNode = temp->nextNode->nextNode;
+            tailNode->nextNode = headNode;
+            rescuePlayer(temp->nextNode);
+            temp = temp->nextNode;
+            delete temp;
+        }
+        else if (temp->nextNode == tailNode) {
+            tailNode = temp;
+            temp = temp->nextNode;
+            tailNode->nextNode = temp->nextNode;
+            rescuePlayer(temp);
+            delete temp;
+        }
+        else {
+            Node<T> *temp2 = temp->nextNode;
+            temp->nextNode = temp2->nextNode;
+            rescuePlayer(temp2);
+            delete temp2;
+        }
+
         cout << "removeByName unwritten" << endl;
-        return false;
+        return true;
+    }
+
+    void rescuePlayer(Node<T> *temp) {
+        if (temp == playerNode) {
+            playerNode = temp->nextNode;
+        }
     }
 
     // -------------------------------
@@ -258,6 +308,7 @@ public:
         return matches;
     }
 
+    /* ////// OPTED FOR OPTION A //////
     // -------------------------------
     // Advanced Option B (Level 2): Mirror the Board (Circular Reversal)
     // -------------------------------
@@ -269,6 +320,7 @@ public:
         // - Player cursor must remain on the same logical space after reversal
         cout << "mirrorBoard unwritten" << endl;
     }
+    */
 
     // -------------------------------
     // Edge-case helper: countSpaces O(n)
