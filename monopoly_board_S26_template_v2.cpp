@@ -125,12 +125,11 @@ public:
         }
         // - nodeCount++
         nodeCount++;
-        cout << "addSpace unwritten" << endl;
         return false;
     }
 
-    bool isEmpty() {  nodeCount == 0; }         // Checks if list is empty :)
-    bool isFull() { nodeCount == MAX_SPACES; }  // Checks if list is full/at capacity
+    bool isEmpty() {  return nodeCount == 0; }         // Checks if list is empty :)
+    bool isFull() { return nodeCount == MAX_SPACES; }  // Checks if list is full/at capacity
 
     // -------------------------------
     // Core B: Add Multiple Spaces at Once
@@ -148,7 +147,6 @@ public:
             addSpace(values[i]);
         }
         // - Do not corrupt pointers if capacity is exceeded
-        cout << "addMany unwritten" << endl;
         return i + 1;
     }
 
@@ -171,8 +169,6 @@ public:
                 passGoCount++;
             }
         }
-
-        cout << "movePlayer unwritten" << endl;
         return;
     }
 
@@ -203,7 +199,6 @@ public:
             traverse = traverse->nextNode;
             i++;
         }
-        cout << "printFromPlayer unwritten" << endl;
     }
 
     // Optional helper: print full board once (one full cycle)
@@ -220,7 +215,6 @@ public:
             traverse->data.print();
             traverse = traverse->nextNode;
         }
-        cout << "printBoardOnce unwritten" << endl;
     }
 
     // -------------------------------
@@ -284,8 +278,6 @@ public:
             rescuePlayer(temp2);
             delete temp2;
         }
-
-        cout << "removeByName unwritten" << endl;
         return true;
     }
 
@@ -303,8 +295,14 @@ public:
         // - Traverse ring exactly once
         // - Collect matching names in vector<string>
         // - Return matches
-        cout << "findByColor unwritten" << endl;
         vector<string> matches;
+        Node<T> *traverse = headNode;
+        for (int i = 0; i < nodeCount; i++) {
+            if (traverse->data.color == color) {
+                matches.push_back(traverse->data.name);
+            }
+            traverse = traverse->nextNode;
+        }
         return matches;
     }
 
