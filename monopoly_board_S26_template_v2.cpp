@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -327,8 +328,16 @@ public:
         // TODO:
         // - Must be O(n), traverse exactly once with correct stop condition
         // - Do NOT rely on nodeCount for this method
-        cout << "countSpaces unwritten" << endl;
-        return 0;
+        if (headNode == nullptr) {
+            return 0;
+        }
+        int count = 1;
+        Node<T> *traverse = headNode->nextNode;
+        while (traverse != headNode) {
+            count++;
+            traverse = traverse->nextNode;
+        }
+        return count;
     }
 
     // -------------------------------
@@ -339,7 +348,18 @@ public:
         // - Safely delete all nodes
         // - Tip: if tailNode exists, break the cycle first: tailNode->nextNode = nullptr
         // - Then delete like a normal singly linked list
-        cout << "clear unwritten" << endl;
+        if (isEmpty()) {
+            return;
+        }
+        tailNode->nextNode = nullptr;
+        while (headNode->nextNode != nullptr) {
+            Node<T> *temp = headNode;
+            headNode = headNode->nextNode;
+            delete temp;
+        }
+        Node<T> *temp = headNode;
+        headNode = nullptr;
+        delete temp;
     }
 };
 
@@ -371,7 +391,22 @@ int main() {
     // NOTE: This starter calls addSpace once to show the intended API,
     // but your final submission should build a meaningful board.
     board.addSpace(MonopolySpace("GO", "None", 0, 0));
+    ifstream inputFile("MonopolySpaces.txt");
+    vector<MonopolySpace> test;
+    while (!inputFile.eof()) {
+        string name;
+        string color;
+        int value;
+        int rent;
+        inputFile >> name >> color >> value >> rent;
+        test.push_back(MonopolySpace(name, color, value, rent));
+    }
+    inputFile.close();
 
+    board.addMany(test);
+
+
+    /*
     // -------------------------------
     // Playable Traversal Loop
     // -------------------------------
@@ -386,6 +421,9 @@ int main() {
 
         cout << "Times passed GO so far: " << board.getPassGoCount() << endl;
     }
+    */
+
+    board.printBoardOnce();
 
     // -------------------------------
     // Advanced Feature Demos (students choose path)
