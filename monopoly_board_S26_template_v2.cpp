@@ -146,6 +146,7 @@ public:
         int i = 0;
         while (nodeCount < MAX_SPACES && i < values.size()) {
             addSpace(values[i]);
+            i++;
         }
         // - Do not corrupt pointers if capacity is exceeded
         return i + 1;
@@ -393,14 +394,23 @@ int main() {
     board.addSpace(MonopolySpace("GO", "None", 0, 0));
     ifstream inputFile("MonopolySpaces.txt");
     vector<MonopolySpace> test;
-    while (!inputFile.eof()) {
-        string name;
-        string color;
-        int value;
-        int rent;
-        inputFile >> name >> color >> value >> rent;
-        test.push_back(MonopolySpace(name, color, value, rent));
-    }
+
+    string name;
+    string color;
+    int value;
+    int rent;
+
+    inputFile >> name >> color >> value >> rent;
+    test.push_back(MonopolySpace(name, color, value, rent));
+
+    inputFile >> name >> color >> value >> rent;
+    test.push_back(MonopolySpace(name, color, value, rent));
+
+    cout << test.size() << endl;
+
+    //board.addSpace(test[0]);
+    //board.addSpace(test[1]);
+
     inputFile.close();
 
     board.addMany(test);
