@@ -167,13 +167,13 @@ public:
         if (isEmpty()) {
             return;
         }
+
         for (int i = 0; i < steps; i++) {
             playerNode = playerNode->nextNode; //move player, THEN check
             if (playerNode == headNode) {
                 passGoCount++;
             }
         }
-        return;
     }
 
     int getPassGoCount() {
@@ -194,10 +194,12 @@ public:
         if (isEmpty()) {
             return;
         }
-        Node<T> *traverse = playerNode;
-        int i = 1;
-        traverse->data.print();
-        traverse = traverse->nextNode;
+        if (nodeCount == 1) {
+            playerNode->data.print();
+            return;
+        }
+        Node<T> *traverse = playerNode->nextNode;
+        int i = 0;
         while (i < count && traverse != playerNode) {
             traverse->data.print();
             traverse = traverse->nextNode;
@@ -434,20 +436,41 @@ int main() {
     inputFile.close();
 
     board.addMany(test);
+    //board.removeByName("Baltic Avenue");
+
+    /*
 
     board.addSpace(test[0]);
 
     board.printBoardOnce();
+    cout << board.countSpaces() << endl;
+
+    board.removeByName("Boardwalk");
+
+    board.printBoardOnce();
+    cout << board.countSpaces() << endl;
 
     vector<string> v = board.findByColor("Brown");
     for (int i = 0; i < v.size(); i++) {
         cout << v[i] << endl;
     }
 
+    cout << board.countSpaces() << endl;
+
+    board.clear();
+
+    cout << board.countSpaces() << endl;
+
+    v = board.findByColor("Brown");
+
+    cout << v[0] << endl;
+
+    */
+
     //board.removeByName("Mediterranean Avenue");
 
 
-    /*
+
     // -------------------------------
     // Playable Traversal Loop
     // -------------------------------
@@ -462,8 +485,14 @@ int main() {
 
         cout << "Times passed GO so far: " << board.getPassGoCount() << endl;
     }
-    */
 
+
+    //board.printFromPlayer(5);
+
+    //board.movePlayer(5);
+    //board.printFromPlayer(5);
+
+    //board.printFromPlayer(5);
 
     // -------------------------------
     // Advanced Feature Demos (students choose path)

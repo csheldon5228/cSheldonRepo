@@ -51,3 +51,14 @@
 **What I tried:** Originally kept test spaces in, with GO as a separate function call  
 **Fix / resolution (or final decision):** Wrote the data for each space into the csv so that all 40 spaces are stored together & tested edge cases  
 **Commit(s):** 8
+
+---
+
+### Entry 6
+**Date:** 2026-03-08  
+**Entry Type:** Bug Fix 
+**Task worked on:** movePlayer  
+**Issue or decision:** Code accidentally assumed player started on a space before GO  
+**What I tried:** Tried to print from the player including the spot occupied by the player, resulting in only showing the current space and the next four  
+**Fix / resolution (or final decision):** Changed the starting conditions for the traversal to start on the node after the player  
+**Commit(s):** 9
