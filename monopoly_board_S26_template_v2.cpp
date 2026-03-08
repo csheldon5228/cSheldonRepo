@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -137,7 +138,7 @@ public:
     // -------------------------------
     int addMany(vector<T> values) {
         // TODO:
-        if (isFull()) {
+        if (isFull() || values.size() == 0) {
             return 0;
         }
         // - Add sequentially until full
@@ -240,7 +241,7 @@ public:
 
         Node<T> *temp = headNode;
         if (nodeCount == 1) {
-            if (headNode->data.name == name) {
+            if (headNode->data.propertyName == name) {
                 tailNode = nullptr;
                 headNode = nullptr;
                 playerNode = nullptr;
@@ -253,7 +254,7 @@ public:
         }
 
         int i = 0;
-        while (temp->nextNode->data.name != name) {
+        while (temp->nextNode->data.propertyName != name) {
             temp = temp->nextNode;
             if (i > nodeCount) {
                 return false;
@@ -392,21 +393,38 @@ int main() {
     // NOTE: This starter calls addSpace once to show the intended API,
     // but your final submission should build a meaningful board.
     board.addSpace(MonopolySpace("GO", "None", 0, 0));
-    ifstream inputFile("MonopolySpaces.txt");
+
+    ifstream inputFile("MonopolySpaces.csv");
     vector<MonopolySpace> test;
 
+    string line;
     string name;
     string color;
     int value;
+    string valuestr;
     int rent;
+    string rentstr;
 
-    inputFile >> name >> color >> value >> rent;
-    test.push_back(MonopolySpace(name, color, value, rent));
+    while (!inputFile.eof()) {
 
-    inputFile >> name >> color >> value >> rent;
-    test.push_back(MonopolySpace(name, color, value, rent));
+        getline(inputFile, line);
+        istringstream iss(line);
 
-    cout << test.size() << endl;
+        getline(iss, name, ',');
+        getline(iss, color, ',');
+        getline(iss, valuestr, ',');
+        getline(iss, rentstr, ',');
+
+        //cout << name << endl;
+
+        value = std::stoi(valuestr);
+        rent = std::stoi(rentstr);
+
+        //inputFile >> name >> color >> value >> rent;
+        test.push_back(MonopolySpace(name, color, value, rent));
+    }
+
+    //cout << test.size() << endl;
 
     //board.addSpace(test[0]);
     //board.addSpace(test[1]);
@@ -414,6 +432,10 @@ int main() {
     inputFile.close();
 
     board.addMany(test);
+
+    board.addSpace(test[0]);
+
+    board.removeByName("Mediterranean Avenue");
 
 
     /*
