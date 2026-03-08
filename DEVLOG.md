@@ -32,3 +32,22 @@
 
 ---
 
+### Entry 4
+**Date:** 2026-03-08  
+**Entry Type:** Testing Entry  
+**Task worked on:** findByColor  
+**Issue or decision:** Failed in testing due errors in references  
+**What I tried:** Accidentally referred to fields that did not exist in the MonopolySpace  
+**Fix / resolution (or final decision):** Changed the reference variables to match what was in the MonopolySpaces class  
+**Commit(s):** 8
+
+---
+
+### Entry 5
+**Date:** 2026-03-08  
+**Entry Type:** Engineering Decision  
+**Task worked on:** MonopolySpaces.csv  
+**Issue or decision:** Every monopoly space saved into csv file  
+**What I tried:** Originally kept test spaces in, with GO as a separate function call  
+**Fix / resolution (or final decision):** Wrote the data for each space into the csv so that all 40 spaces are stored together & tested edge cases  
+**Commit(s):** 8

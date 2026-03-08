@@ -1,2 +1,40 @@
-Mediterranean Ave,Brown,60,12
+Go,None,0,0
+Mediterranean Avenue,Brown,60,2
 Community Chest,None,0,0
+Baltic Avenue,Brown,60,4
+Income Tax,Tax,0,200
+Reading Railroad,RR,200,25
+Oriental Avenue,Light Blue,100,6
+Chance,None,0,0
+Vermont Avenue,Light Blue,100,6
+Connecticut Avenue,Light Blue,120,8
+Jail / Just Visiting,None,0,0
+St. Charles Place,Pink,140,10
+Electric Company,Utility,150,28
+States Avenue,Pink,140,10
+Virginia Avenue,Pink,160,12
+Pennsylvania Railroad,RR,200,25
+St. James Place,Orange,180,14
+Community Chest,None,0,0
+Tennessee Avenue,Orange,180,14
+New York Avenue,Orange,200,16
+Free Parking,None,0,0
+Kentucky Avenue,Red,220,18
+Chance,None,0,0
+Indiana Avenue,Red,220,18
+Illinois Avenue,Red,240,20
+B. & O. Railroad,RR,200,25
+Atlantic Avenue,Yellow,260,22
+Ventnor Avenue,Yellow,260,22
+Water Works,Utility,150,28
+Marvin Gardens,Yellow,280,24
+Go To Jail,None,0,0
+Pacific Avenue,Green,300,26
+North Carolina Avenue,Green,300,26
+Community Chest,None,0,0
+Pennsylvania Avenue,Green,320,28
+Short Line,RR,200,25
+Chance,None,0,0
+Park Place,Dark Blue,350,35
+Luxury Tax,Tax,0,0
+Boardwalk,Dark Blue,400,50

@@ -107,6 +107,7 @@ public:
         // TODO:
         // - If nodeCount == MAX_SPACES return false (do not corrupt list)
         if (isFull()) {
+            cout << "Board is full!" << endl;
             return false;
         }
 
@@ -301,8 +302,8 @@ public:
         vector<string> matches;
         Node<T> *traverse = headNode;
         for (int i = 0; i < nodeCount; i++) {
-            if (traverse->data.color == color) {
-                matches.push_back(traverse->data.name);
+            if (traverse->data.propertyColor == color) {
+                matches.push_back(traverse->data.propertyName);
             }
             traverse = traverse->nextNode;
         }
@@ -392,7 +393,8 @@ int main() {
     //
     // NOTE: This starter calls addSpace once to show the intended API,
     // but your final submission should build a meaningful board.
-    board.addSpace(MonopolySpace("GO", "None", 0, 0));
+
+    //board.addSpace(MonopolySpace("GO", "None", 0, 0));
 
     ifstream inputFile("MonopolySpaces.csv");
     vector<MonopolySpace> test;
@@ -435,7 +437,14 @@ int main() {
 
     board.addSpace(test[0]);
 
-    board.removeByName("Mediterranean Avenue");
+    board.printBoardOnce();
+
+    vector<string> v = board.findByColor("Brown");
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << endl;
+    }
+
+    //board.removeByName("Mediterranean Avenue");
 
 
     /*
@@ -455,7 +464,6 @@ int main() {
     }
     */
 
-    board.printBoardOnce();
 
     // -------------------------------
     // Advanced Feature Demos (students choose path)
