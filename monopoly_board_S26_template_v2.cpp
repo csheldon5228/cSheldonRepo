@@ -8,8 +8,6 @@
 
 using namespace std;
 
-static const int MAX_SPACES = 40;
-
 // -------------------------------
 // Data class (NOT a struct)
 // -------------------------------
@@ -42,8 +40,8 @@ public:
     }
 
     void print() {
-        cout << "Name: " << this->propertyName << " | Color: " << this->propertyColor << " | Value: $" <<
-            this->value << " | Rent: $" << this->rent << endl;
+        cout << "Name: " << this->propertyName << ", Color: " << this->propertyColor << ", Value: $" <<
+            this->value << ", Rent: $" << this->rent << endl;
     }
 };
 
@@ -104,23 +102,18 @@ public:
     // Core A: Add a Space with Capacity Enforcement
     // -------------------------------
     bool addSpace(T value) { // basically just appends
-        // TODO:
-        // - If nodeCount == MAX_SPACES return false (do not corrupt list)
         if (isFull()) {
             cout << "Board is full!" << endl;
             return false;
         }
 
-        // - Create new node
         Node<T> *newNode = new Node<T>(value);
-        // - If empty list: head=tail=player=new, new->next=head
         if (isEmpty()) {
             headNode = newNode;
             tailNode = newNode;
             playerNode = newNode;
             newNode->nextNode = headNode; // circularity
         }
-        // - Else: tail->next=new, tail=new, tail->next=head
         else {
             tailNode->nextNode = newNode;
             tailNode = newNode;
@@ -138,19 +131,14 @@ public:
     // Core B: Add Multiple Spaces at Once
     // -------------------------------
     int addMany(vector<T> values) {
-        // TODO:
         if (isFull() || values.size() == 0) {
             return 0;
         }
-        // - Add sequentially until full
-        // - Stop exactly when you reach MAX_SPACES
-        // - Return number successfully added
         int i = 0;
         while (nodeCount < MAX_SPACES && i < values.size()) {
             addSpace(values[i]);
             i++;
         }
-        // - Do not corrupt pointers if capacity is exceeded
         return i + 1;
     }
 
@@ -158,12 +146,6 @@ public:
     // Core C: Traversal-Based Player Movement
     // -------------------------------
     void movePlayer(int steps) {
-        // TODO:
-        // - Move playerNode forward 'steps' times, node-by-node
-        // - Wrap naturally because list is circular
-        // - Detect and track passing GO:
-        //   increment passGoCount when a move crosses from tail back to head
-        // - Must handle empty list safely
         if (isEmpty()) {
             return;
         }
@@ -184,12 +166,6 @@ public:
     // Core D: Controlled Board Display
     // -------------------------------
     void printFromPlayer(int count) {
-        // TODO:
-        // - Print exactly 'count' nodes starting from playerNode
-        // - Must not infinite loop
-        // - Must handle empty list
-        // - Output must be deterministic and readable
-        // node.data.print()
         // if amt of spaces is short, don't iterate back over player
         if (isEmpty()) {
             return;
@@ -209,8 +185,6 @@ public:
 
     // Optional helper: print full board once (one full cycle)
     void printBoardOnce() {
-        // TODO:
-        // - Traverse exactly one full cycle and print each node
         if (isEmpty()) {
             return;
         }
@@ -227,15 +201,6 @@ public:
     // Advanced Option A (Level 1): removeByName
     // -------------------------------
     bool removeByName(string name) {
-        // TODO:
-        // - Delete FIRST matching node
-        // - Must handle:
-        //   - deleting head
-        //   - deleting tail
-        //   - deleting the only-node list
-        // - Maintain circular link tail->next=head
-        // - If playerNode points to deleted node, move playerNode to a safe node
-        // - nodeCount--
 
         // find node via checking if curr->next.name = name, check for head/tail, delete node accordingly
         if (isEmpty()) {
@@ -297,10 +262,6 @@ public:
     // Advanced Option A (Level 1): findByColor
     // -------------------------------
     vector<string> findByColor(string color) {
-        // TODO:
-        // - Traverse ring exactly once
-        // - Collect matching names in vector<string>
-        // - Return matches
         vector<string> matches;
         Node<T> *traverse = headNode;
         for (int i = 0; i < nodeCount; i++) {
@@ -330,9 +291,6 @@ public:
     // Edge-case helper: countSpaces O(n)
     // -------------------------------
     int countSpaces() {
-        // TODO:
-        // - Must be O(n), traverse exactly once with correct stop condition
-        // - Do NOT rely on nodeCount for this method
         if (headNode == nullptr) {
             return 0;
         }
@@ -349,10 +307,6 @@ public:
     // Cleanup
     // -------------------------------
     void clear() {
-        // TODO:
-        // - Safely delete all nodes
-        // - Tip: if tailNode exists, break the cycle first: tailNode->nextNode = nullptr
-        // - Then delete like a normal singly linked list
         if (isEmpty()) {
             return;
         }
@@ -364,6 +318,8 @@ public:
         }
         Node<T> *temp = headNode;
         headNode = nullptr;
+        tailNode = nullptr;
+        playerNode = nullptr;
         delete temp;
     }
 };
@@ -396,10 +352,8 @@ int main() {
     // NOTE: This starter calls addSpace once to show the intended API,
     // but your final submission should build a meaningful board.
 
-    //board.addSpace(MonopolySpace("GO", "None", 0, 0));
-
     ifstream inputFile("MonopolySpaces.csv");
-    vector<MonopolySpace> test;
+    vector<MonopolySpace> spaces;
 
     string line;
     string name;
@@ -419,57 +373,14 @@ int main() {
         getline(iss, valuestr, ',');
         getline(iss, rentstr, ',');
 
-        //cout << name << endl;
-
         value = std::stoi(valuestr);
         rent = std::stoi(rentstr);
 
-        //inputFile >> name >> color >> value >> rent;
-        test.push_back(MonopolySpace(name, color, value, rent));
+        spaces.push_back(MonopolySpace(name, color, value, rent));
     }
 
-    //cout << test.size() << endl;
-
-    //board.addSpace(test[0]);
-    //board.addSpace(test[1]);
-
+    board.addMany(spaces);
     inputFile.close();
-
-    board.addMany(test);
-    //board.removeByName("Baltic Avenue");
-
-    /*
-
-    board.addSpace(test[0]);
-
-    board.printBoardOnce();
-    cout << board.countSpaces() << endl;
-
-    board.removeByName("Boardwalk");
-
-    board.printBoardOnce();
-    cout << board.countSpaces() << endl;
-
-    vector<string> v = board.findByColor("Brown");
-    for (int i = 0; i < v.size(); i++) {
-        cout << v[i] << endl;
-    }
-
-    cout << board.countSpaces() << endl;
-
-    board.clear();
-
-    cout << board.countSpaces() << endl;
-
-    v = board.findByColor("Brown");
-
-    cout << v[0] << endl;
-
-    */
-
-    //board.removeByName("Mediterranean Avenue");
-
-
 
     // -------------------------------
     // Playable Traversal Loop
@@ -485,14 +396,6 @@ int main() {
 
         cout << "Times passed GO so far: " << board.getPassGoCount() << endl;
     }
-
-
-    //board.printFromPlayer(5);
-
-    //board.movePlayer(5);
-    //board.printFromPlayer(5);
-
-    //board.printFromPlayer(5);
 
     // -------------------------------
     // Advanced Feature Demos (students choose path)
