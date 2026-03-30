@@ -19,10 +19,29 @@ struct Token {
 vector<Token> tokenize(const string& line) {
     vector<Token> tokens;
     // TODO
-    for (int i = 0; i < line.length(); i+=2) {
-        Token t = {line.substr(i,1)};
-        tokens.push_back(t);
+    int i = 0;
+    string str = "";
+    Token t;
+    while (i < line.length()) {
+        if (!(isspace(line.at(i)))) {
+            str += line.substr(i,1);
+            //printf(" (not a space) ");
+            //printf("%s",str.c_str());
+        }
+        else {
+            //printf(" %s ",str.c_str());
+            t = {str};
+            tokens.push_back(t);
+            //printf(" %s ",tokens.back().value.c_str());
+            str = "";
+            //printf(" (is a space) ");
+        }
+        //printf("%c\n", str.at(i));
+        i++;
     }
+    t = {str};
+    tokens.push_back(t);
+
     return tokens;
 }
 
@@ -96,11 +115,11 @@ int main() {
 
     */
 
-    /* ///FOR TESTING TOKENIZER
+     ///FOR TESTING TOKENIZER
     for (int i = 0; i < tokens.size(); i++) {
         printf("%s\n", tokens[i].value.c_str());
     }
-    */
+
 
     return 0;
 }
