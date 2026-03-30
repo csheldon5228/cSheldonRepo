@@ -47,6 +47,13 @@ vector<Token> tokenize(const string& line) {
 
 // Helpers
 
+bool isValidExpression(const vector<Token>& tokens) {
+    if (tokens.empty() || tokens.size() < 3 || tokens.size() % 2 == 0) {
+        return false;
+    }
+    return true;
+}
+
 bool isOperator(const string& s) {
     return s == "+" || s == "-" || s == "*" || s == "/";
 }
@@ -60,12 +67,29 @@ int precedence(const string& op) {
 
 bool isValidPostfix(const vector<Token>& tokens) {
     // TODO
+
+    if (~isValidExpression(tokens)) {
+        return false;
+    }
+
+    if (~isOperator(tokens[0].value) && ~isOperator(tokens[1].value) && isOperator(tokens.back().value)) {
+        return true;
+    }
     return false;
 }
 
 bool isValidInfix(const vector<Token>& tokens) {
     // TODO
-    return false;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        if (i % 2 == 0 && isOperator(tokens[i].value)) { //checks if an even element is an op
+            return false;
+        }
+        if (i % 2 == 1 && ~isOperator(tokens[i].value)) { //checks if an odd element is a number
+            return false;
+        }
+    }
+    return true;
 }
 
 // Conversion
