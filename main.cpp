@@ -72,7 +72,19 @@ bool isValidPostfix(const vector<Token>& tokens) {
         return false;
     }
 
-    if (~isOperator(tokens[0].value) && ~isOperator(tokens[1].value) && isOperator(tokens.back().value)) {
+    int countNums = 0;
+    int countOps = 0;
+    for (int i = 0; i < tokens.size(); i++) {
+        if (isOperator(tokens[i].value)) {
+            countOps++;
+        }
+        else {
+            countNums++;
+        }
+    }
+
+    if (~isOperator(tokens[0].value) && ~isOperator(tokens[1].value) &&
+        isOperator(tokens.back().value) && countNums == countOps + 1) {
         return true;
     }
     return false;
@@ -81,14 +93,8 @@ bool isValidPostfix(const vector<Token>& tokens) {
 bool isValidInfix(const vector<Token>& tokens) {
     // TODO
 
-    for (int i = 0; i < tokens.size(); i++) {
-        if (i % 2 == 0 && isOperator(tokens[i].value)) { //checks if an even element is an op
-            return false;
-        }
-        if (i % 2 == 1 && ~isOperator(tokens[i].value)) { //checks if an odd element is a number
-            return false;
-        }
-    }
+
+
     return true;
 }
 
