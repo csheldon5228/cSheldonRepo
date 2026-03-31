@@ -48,10 +48,31 @@ vector<Token> tokenize(const string& line) {
 // Helpers
 
 bool isValidExpression(const vector<Token>& tokens) {
-    if (tokens.empty() || tokens.size() < 3 || tokens.size() % 2 == 0) {
+
+    int countParens = 0;
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i].value == "(") {
+            countParens++;
+        }
+        if (tokens[i].value == ")") {
+            countParens--;
+        }
+    }
+
+    if (tokens.empty() || tokens.size() < 3 ||
+        tokens.size() % 2 == 0 || countParens != 0) {
         return false;
     }
     return true;
+}
+
+bool hasParens(const vector<Token>& tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i].value == "(" || tokens[i].value == ")") {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool isOperator(const string& s) {
@@ -68,25 +89,25 @@ int precedence(const string& op) {
 bool isValidPostfix(const vector<Token>& tokens) {
     // TODO
 
-    if (~isValidExpression(tokens)) {
+    if (~isValidExpression(tokens) || hasParens(tokens)) {
         return false;
     }
 
-    int countNums = 0;
     int countOps = 0;
     for (int i = 0; i < tokens.size(); i++) {
         if (isOperator(tokens[i].value)) {
             countOps++;
         }
         else {
-            countNums++;
+            countOps--;
         }
     }
 
     if (~isOperator(tokens[0].value) && ~isOperator(tokens[1].value) &&
-        isOperator(tokens.back().value) && countNums == countOps + 1) {
+        isOperator(tokens.back().value) && countOps == -1) {
         return true;
     }
+
     return false;
 }
 
