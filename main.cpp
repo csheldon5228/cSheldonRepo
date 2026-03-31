@@ -66,13 +66,13 @@ bool isValidExpression(const vector<Token>& tokens) {
     return true;
 }
 
-bool hasParens(const vector<Token>& tokens) {
+int hasParens(const vector<Token>& tokens) {
     for (int i = 0; i < tokens.size(); i++) {
-        if (tokens[i].value == "(" || tokens[i].value == ")") {
-            return true;
+        if (tokens[i].value == "(") {
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 bool isOperator(const string& s) {
@@ -81,7 +81,16 @@ bool isOperator(const string& s) {
 
 int precedence(const string& op) {
     // TODO
-    return 0;
+
+    if (op == "+" || op == "-") {
+        return 1;
+    }
+    else if (op == "*" || op == "/") {
+        return 2;
+    }
+    else {
+        return -1;
+    }
 }
 
 // Detection
@@ -89,7 +98,7 @@ int precedence(const string& op) {
 bool isValidPostfix(const vector<Token>& tokens) {
     // TODO
 
-    if (~isValidExpression(tokens) || hasParens(tokens)) {
+    if (!(isValidExpression(tokens)) || hasParens(tokens)) {
         return false;
     }
 
@@ -103,12 +112,12 @@ bool isValidPostfix(const vector<Token>& tokens) {
         }
     }
 
-    if (~isOperator(tokens[0].value) && ~isOperator(tokens[1].value) &&
+    if (!(isOperator(tokens[0].value)) && !(isOperator(tokens[1].value)) &&
         isOperator(tokens.back().value) && countOps == -1) {
         return true;
     }
 
-    return false;
+    printf("\nLINE 111"); return false;
 }
 
 bool isValidInfix(const vector<Token>& tokens) {
@@ -121,25 +130,25 @@ bool isValidInfix(const vector<Token>& tokens) {
     int parens = 0;
     for (int i = 0; i < tokens.size(); i++) {
 
-        printf(" %s ", tokens[i].value.c_str());
+        //printf(" %s ", tokens[i].value.c_str());
 
         if (tokens[i].value == "(" || tokens[i].value == ")") {
             parens++;
         }
         else if (parens % 2 == 0) { // even, or "normal" (not shifted from parens)
             if (i % 2 == 0 && isOperator(tokens[i].value)) { // checks if the element is an op, which it should not
-                printf("LINE 131"); return false;
+                printf("\nLINE 131"); return false;
             }
             if (i % 2 == 1 && !(isOperator(tokens[i].value))) { // checks if the element is a num, which it should not
-                printf("LINE 134"); return false;
+                printf("\nLINE 134"); return false;
             }
         }
         else { // "shifted" from the parens
             if (i % 2 == 1 && isOperator(tokens[i].value)) { // checks if the element is an op, which it should not
-                printf("LINE 139"); return false;
+                printf("\nLINE 139"); return false;
             }
             if (i % 2 == 0 && !(isOperator(tokens[i].value))) { // checks if the element is a num, which it should not
-                printf("LINE 142"); return false;
+                printf("\nLINE 142"); return false;
             }
         }
     }
@@ -152,6 +161,16 @@ bool isValidInfix(const vector<Token>& tokens) {
 vector<Token> infixToPostfix(const vector<Token>& tokens) {
     vector<Token> output;
     // TODO
+
+
+    int parens = hasParens(tokens);
+    if (parens != -1) {
+
+    }
+    else { //no parentheses
+        
+    }
+
     return output;
 }
 
@@ -200,7 +219,7 @@ int main() {
     }
 
     printf("\n%d",isValidExpression(tokens));
-    //printf("\n%d",isValidPostfix(tokens));
+    printf("\n%d",isValidPostfix(tokens));
     printf("\n%d",isValidInfix(tokens));
 
     return 0;
