@@ -99,6 +99,15 @@ int precedence(const string& op) {
     }
 }
 
+// Printing
+
+void printTokens(const vector<Token>& tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+        printf("%s ", tokens[i].value.c_str());
+    }
+    cout << endl;
+}
+
 // Detection
 
 bool isValidPostfix(const vector<Token>& tokens) {
@@ -172,10 +181,17 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
     for (int i = 0; i < tokens.size(); i++) {
         Token t = tokens[i];
         ops.printStack();
+        printTokens(output);
         if (precedence(t.value) != -1) { // is operator or parens
             //ops.push(t);
-            if (ops.size() >= 1) { // has to be more than 1 operator in stack
-                if (t.value != "(" && t.value != ")" && precedence(ops.top().value) == precedence(t.value)) { // if the current op and the previous op are of the same precedence, ignores if parens
+            if (ops.size() >= 1 && output.size() > 1) { // has to be more than 1 operator in stack, and operator has to have more than 2
+                if (t.value != "(" && t.value != ")" &&
+                    (precedence(ops.top().value) == precedence(t.value) || (precedence(t.value) == 1 && precedence(ops.top().value) == 2)))
+
+                    { // if the current op and the previous op are of the same precedence
+                      // OR if the current op is of lower precedence than previous, prev gets added to output
+                      // ignores if parens
+
                     output.push_back(ops.top());
                     ops.pop();
                     ops.push(t);
@@ -189,7 +205,7 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
                     ops.pop(); // gets rid of "(" in stack
                 }
 
-                else { // prev op is not of same precedence & can be opening parens
+                else { // prev op is not of same precedence/previous op is not of higher precedence than current & can be opening parens
                     ops.push(t);
                 }
             }
@@ -202,8 +218,10 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
         }
     }
 
-    output.push_back(ops.top());
-    ops.pop();
+    while (!(ops.empty())) {
+        output.push_back(ops.top());
+        ops.pop();
+    }
 
     return output;
 }
@@ -216,14 +234,7 @@ double evalPostfix(const vector<Token>& tokens) {
     return 0.0;
 }
 
-// Printing
 
-void printTokens(const vector<Token>& tokens) {
-    for (int i = 0; i < tokens.size(); i++) {
-        printf("%s ", tokens[i].value.c_str());
-    }
-    cout << endl;
-}
 
 // Main
 

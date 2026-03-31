@@ -43,3 +43,15 @@
 **What I tried:** Originally forgot to fully flush stack  
 **Fix / resolution (or final decision):** After full iteration through the input vector, the stack gets flushed to the output vector  
 **Commit(s):** 9
+
+---
+
+### Entry 5
+**Date:** 2026-03-31  
+**Entry Type:** Edge Case  
+**Task worked on:** infixToPostFix  
+**Issue or decision:** Failure of different precedences to be added correctly, or a closing parens is at the end of the input   
+**Error message / symptom (if applicable):** Was getting out of bounds error with the parens glitch   
+**What I tried:** Did not account for parens at end of input, and did not have a way to check for the previous operator being of higher precedence than current  
+**Fix / resolution (or final decision):** Added statement to initial operator check so that the precedence could be handled correctly, along with fixing the parens issue  
+**Commit(s):** 10

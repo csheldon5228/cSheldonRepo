@@ -18,7 +18,7 @@ public:
     void pop() {
         // TODO
         if (empty()) {
-            throw std::out_of_range("Stack is empty");
+            throw std::out_of_range("Stack is empty, from pop method");
         }
         if (size() == 1) {
             data.clear();
@@ -31,7 +31,7 @@ public:
     T top() const {
         // TODO
         if (empty()) {
-            throw std::out_of_range("Stack is empty");
+            throw std::out_of_range("Stack is empty, from top method");
         }
         return data.back();
     }
