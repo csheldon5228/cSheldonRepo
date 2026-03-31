@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -237,7 +238,43 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 double evalPostfix(const vector<Token>& tokens) {
     ArrayStack<double> stack;
     // TODO
-    return 0.0;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        if (isOperator(tokens[i].value)) {
+            // current token is an operator
+
+            double num1 = stack.top();
+            stack.pop();
+            double num2 = stack.top();
+            stack.pop();
+
+            if (tokens[i].value == "+") {
+                stack.push(num2 + num1);
+            }
+            else if (tokens[i].value == "-") {
+                stack.push(num2 - num1);
+            }
+            else if (tokens[i].value == "*") {
+                stack.push(num2 * num1);
+            }
+            else {
+                stack.push(num2 / num1);
+            }
+        }
+        else { // current token is a number
+            stringstream stream;
+            double num;
+
+            stream << tokens[i].value;
+            stream >> num;
+            stack.push(num);
+
+            stream.str("");
+            stream.clear();
+        }
+    }
+
+    return stack.top();
 }
 
 
@@ -279,6 +316,8 @@ int main() {
 
      ///FOR TESTING TOKENIZER
     printTokens(tokens);
+
+    cout << evalPostfix(tokens);
 
     //printf("\n%d",isValidExpression(tokens));
     //printf("\n%d",isValidPostfix(tokens));
