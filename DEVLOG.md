@@ -21,3 +21,25 @@
 **Commit(s):** 6
 
 ---
+
+### Entry 3
+**Date:** 2026-03-31  
+**Entry Type:** Bug Fix  
+**Task worked on:** ArrayStack.pop() & ArrayStack.push()  
+**Issue or decision:**  vector.append() and vector.erase() do not exist, or were being misused  
+**Error message / symptom (if applicable):** error: no matching function for call to 'std::vector<Token>::erase(__gnu_cxx::__alloc_traits<std::allocator<Token>, Token>::value_type&)'  
+**What I tried:** Tried to use those vector functions, thinking they would work  
+**Fix / resolution (or final decision):** For push, just had to use vector.push_back() and for the pop, just had to use vector.pop_back()  
+**Commit(s):** 8,9
+
+---
+
+### Entry 4
+**Date:** 2026-03-31  
+**Entry Type:** Bug Fix  
+**Task worked on:** infixToPostFix  
+**Issue or decision:** Last operator in stack was not being added to the output vector   
+**Error message / symptom (if applicable):** Forgot to completely empty stack  
+**What I tried:** Originally forgot to fully flush stack  
+**Fix / resolution (or final decision):** After full iteration through the input vector, the stack gets flushed to the output vector  
+**Commit(s):** 9

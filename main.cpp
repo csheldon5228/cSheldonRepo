@@ -171,10 +171,11 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 
     for (int i = 0; i < tokens.size(); i++) {
         Token t = tokens[i];
+        ops.printStack();
         if (precedence(t.value) != -1) { // is operator or parens
             //ops.push(t);
-            if (ops.size() >= 1) {
-                if (precedence(ops.top().value) == precedence(t.value)) { // if the current op and the previous op are of the same precedence
+            if (ops.size() >= 1) { // has to be more than 1 operator in stack
+                if (t.value != "(" && t.value != ")" && precedence(ops.top().value) == precedence(t.value)) { // if the current op and the previous op are of the same precedence, ignores if parens
                     output.push_back(ops.top());
                     ops.pop();
                     ops.push(t);
@@ -188,16 +189,21 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
                     ops.pop(); // gets rid of "(" in stack
                 }
 
-                else { // does not match any previous conditions, so just add to stack
+                else { // prev op is not of same precedence & can be opening parens
                     ops.push(t);
                 }
             }
-
+            else { // size of stack is 0, so gotta add this :)
+                ops.push(t);
+            }
         }
         else { // is num, just add to output
             output.push_back(t);
         }
     }
+
+    output.push_back(ops.top());
+    ops.pop();
 
     return output;
 }
@@ -208,6 +214,15 @@ double evalPostfix(const vector<Token>& tokens) {
     ArrayStack<double> stack;
     // TODO
     return 0.0;
+}
+
+// Printing
+
+void printTokens(const vector<Token>& tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+        printf("%s ", tokens[i].value.c_str());
+    }
+    cout << endl;
 }
 
 // Main
@@ -241,10 +256,12 @@ int main() {
 
     */
 
+    printTokens(tokens);
+
+    tokens = infixToPostfix(tokens);
+
      ///FOR TESTING TOKENIZER
-    for (int i = 0; i < tokens.size(); i++) {
-        printf("%s ", tokens[i].value.c_str());
-    }
+    printTokens(tokens);
 
     printf("\n%d",isValidExpression(tokens));
     printf("\n%d",isValidPostfix(tokens));

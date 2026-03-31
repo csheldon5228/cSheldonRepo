@@ -24,7 +24,7 @@ public:
             data.clear();
         }
         else {
-            data.erase(data.back());
+            data.pop_back();
         }
     }
 
@@ -44,6 +44,13 @@ public:
     int size() const {
         // TODO
         return data.size();
+    }
+
+    void printStack() {
+        for (int i = 0; i < size(); i++) {
+            printf("%s", data[i].value.c_str());
+        }
+        std::cout << std::endl;
     }
 };
 
