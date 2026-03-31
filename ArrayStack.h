@@ -11,12 +11,10 @@ private:
 
 public:
     void push(const T& value) {
-        // TODO
         data.push_back(value);
     }
 
     void pop() {
-        // TODO
         if (empty()) {
             throw std::out_of_range("Stack is empty, from pop method");
         }
@@ -29,7 +27,6 @@ public:
     }
 
     T top() const {
-        // TODO
         if (empty()) {
             throw std::out_of_range("Stack is empty, from top method");
         }
@@ -37,12 +34,10 @@ public:
     }
 
     bool empty() const {
-        // TODO
         return data.empty();
     }
 
     int size() const {
-        // TODO
         return data.size();
     }
 

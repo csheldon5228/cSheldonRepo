@@ -19,25 +19,18 @@ struct Token {
 
 vector<Token> tokenize(const string& line) {
     vector<Token> tokens;
-    // TODO
     int i = 0;
     string str = "";
     Token t;
     while (i < line.length()) {
         if (!(isspace(line.at(i)))) {
             str += line.substr(i,1);
-            //printf(" (not a space) ");
-            //printf("%s",str.c_str());
         }
         else {
-            //printf(" %s ",str.c_str());
             t = {str};
             tokens.push_back(t);
-            //printf(" %s ",tokens.back().value.c_str());
             str = "";
-            //printf(" (is a space) ");
         }
-        //printf("%c\n", str.at(i));
         i++;
     }
     t = {str};
@@ -81,7 +74,6 @@ bool isOperator(const string& s) {
 }
 
 int precedence(const string& op) {
-    // TODO
 
     if (op == "+" || op == "-") {
         return 1;
@@ -112,9 +104,8 @@ void printTokens(const vector<Token>& tokens) {
 // Detection
 
 bool isValidPostfix(const vector<Token>& tokens) {
-    // TODO
 
-    if (!(isValidExpression(tokens)) || hasParens(tokens)) {
+    if (!(isValidExpression(tokens)) && !(hasParens(tokens))) {
         return false;
     }
 
@@ -133,11 +124,10 @@ bool isValidPostfix(const vector<Token>& tokens) {
         return true;
     }
 
-    printf("\nLINE 111"); return false;
+    return false;
 }
 
 bool isValidInfix(const vector<Token>& tokens) {
-    // TODO
 
     if (!isValidExpression(tokens)) {
         return false;
@@ -146,25 +136,23 @@ bool isValidInfix(const vector<Token>& tokens) {
     int parens = 0;
     for (int i = 0; i < tokens.size(); i++) {
 
-        //printf(" %s ", tokens[i].value.c_str());
-
         if (tokens[i].value == "(" || tokens[i].value == ")") {
             parens++;
         }
         else if (parens % 2 == 0) { // even, or "normal" (not shifted from parens)
             if (i % 2 == 0 && isOperator(tokens[i].value)) { // checks if the element is an op, which it should not
-                printf("\nLINE 131"); return false;
+                return false;
             }
             if (i % 2 == 1 && !(isOperator(tokens[i].value))) { // checks if the element is a num, which it should not
-                printf("\nLINE 134"); return false;
+                return false;
             }
         }
         else { // "shifted" from the parens
             if (i % 2 == 1 && isOperator(tokens[i].value)) { // checks if the element is an op, which it should not
-                printf("\nLINE 139"); return false;
+                return false;
             }
             if (i % 2 == 0 && !(isOperator(tokens[i].value))) { // checks if the element is a num, which it should not
-                printf("\nLINE 142"); return false;
+                return false;
             }
         }
     }
@@ -177,7 +165,6 @@ bool isValidInfix(const vector<Token>& tokens) {
 vector<Token> infixToPostfix(const vector<Token>& tokens) {
     vector<Token> output;
     ArrayStack<Token> ops;
-    // TODO
 
     for (int i = 0; i < tokens.size(); i++) {
         Token t = tokens[i];
@@ -200,8 +187,7 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
                         ops.pop();
                     }
 
-                    ops.push(t); if (t.value == "-") {cout << "LINE 197" << endl;}
-
+                    ops.push(t);
                 }
 
                 else if (precedence(t.value) == 4) { // op is a closing parens, ")"
@@ -209,11 +195,11 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
                         output.push_back(ops.top());
                         ops.pop();
                     }
-                    ops.pop(); if (t.value == "-") {cout << "LINE 206" << endl;} // gets rid of "(" in stack
+                    ops.pop(); // gets rid of "(" in stack
                 }
 
                 else { // prev op is not of same precedence/previous op is not of higher precedence than current & can be opening parens
-                    ops.push(t); if (t.value == "-") {cout << "LINE 209" << endl;}
+                    ops.push(t);
                 }
             }
             else { // size of stack is 0, so gotta add this :)
@@ -237,7 +223,6 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 
 double evalPostfix(const vector<Token>& tokens) {
     ArrayStack<double> stack;
-    // TODO
 
     for (int i = 0; i < tokens.size(); i++) {
         if (isOperator(tokens[i].value)) {
@@ -277,8 +262,6 @@ double evalPostfix(const vector<Token>& tokens) {
     return stack.top();
 }
 
-
-
 // Main
 
 int main() {
@@ -286,8 +269,6 @@ int main() {
     getline(cin, line);
 
     vector<Token> tokens = tokenize(line);
-
-    /*
 
     if (isValidPostfix(tokens)) {
         cout << "FORMAT: POSTFIX\n";
@@ -307,21 +288,6 @@ int main() {
         cout << "FORMAT: NEITHER\n";
         cout << "ERROR: invalid expression\n";
     }
-
-    */
-
-    printTokens(tokens);
-
-    tokens = infixToPostfix(tokens);
-
-     ///FOR TESTING TOKENIZER
-    printTokens(tokens);
-
-    cout << evalPostfix(tokens);
-
-    //printf("\n%d",isValidExpression(tokens));
-    //printf("\n%d",isValidPostfix(tokens));
-    //printf("\n%d",isValidInfix(tokens));
 
     return 0;
 }
