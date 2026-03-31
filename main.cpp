@@ -88,7 +88,13 @@ int precedence(const string& op) {
     else if (op == "*" || op == "/") {
         return 2;
     }
-    else {
+    else if (op == "(") {
+        return 3;
+    }
+    else if (op == ")") {
+        return 4;
+    }
+    else { // is num
         return -1;
     }
 }
@@ -160,15 +166,37 @@ bool isValidInfix(const vector<Token>& tokens) {
 
 vector<Token> infixToPostfix(const vector<Token>& tokens) {
     vector<Token> output;
+    ArrayStack<Token> ops;
     // TODO
 
+    for (int i = 0; i < tokens.size(); i++) {
+        Token t = tokens[i];
+        if (precedence(t.value) != -1) { // is operator or parens
+            //ops.push(t);
+            if (ops.size() >= 1) {
+                if (precedence(ops.top().value) == precedence(t.value)) { // if the current op and the previous op are of the same precedence
+                    output.push_back(ops.top());
+                    ops.pop();
+                    ops.push(t);
+                }
 
-    int parens = hasParens(tokens);
-    if (parens != -1) {
+                else if (precedence(t.value) == 4) { // op is a closing parens, ")"
+                    while (precedence(ops.top().value) != 3) { // while op in stack is not an opening parens, "("
+                        output.push_back(ops.top());
+                        ops.pop();
+                    }
+                    ops.pop(); // gets rid of "(" in stack
+                }
 
-    }
-    else { //no parentheses
-        
+                else { // does not match any previous conditions, so just add to stack
+                    ops.push(t);
+                }
+            }
+
+        }
+        else { // is num, just add to output
+            output.push_back(t);
+        }
     }
 
     return output;

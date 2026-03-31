@@ -12,7 +12,7 @@ private:
 public:
     void push(const T& value) {
         // TODO
-        data.append(value);
+        data.push_back(value);
     }
 
     void pop() {
