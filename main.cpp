@@ -183,7 +183,6 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
         ops.printStack();
         printTokens(output);
         if (precedence(t.value) != -1) { // is operator or parens
-            //ops.push(t);
             if (ops.size() >= 1 && output.size() > 1) { // has to be more than 1 operator in stack, and operator has to have more than 2
                 if (t.value != "(" && t.value != ")" &&
                     (precedence(ops.top().value) == precedence(t.value) || (precedence(t.value) == 1 && precedence(ops.top().value) == 2)))
@@ -194,7 +193,14 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 
                     output.push_back(ops.top());
                     ops.pop();
-                    ops.push(t);
+
+                    while (!(ops.empty()) && precedence(ops.top().value) == precedence(t.value)) {
+                        output.push_back(ops.top());
+                        ops.pop();
+                    }
+
+                    ops.push(t); if (t.value == "-") {cout << "LINE 197" << endl;}
+
                 }
 
                 else if (precedence(t.value) == 4) { // op is a closing parens, ")"
@@ -202,11 +208,11 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
                         output.push_back(ops.top());
                         ops.pop();
                     }
-                    ops.pop(); // gets rid of "(" in stack
+                    ops.pop(); if (t.value == "-") {cout << "LINE 206" << endl;} // gets rid of "(" in stack
                 }
 
                 else { // prev op is not of same precedence/previous op is not of higher precedence than current & can be opening parens
-                    ops.push(t);
+                    ops.push(t); if (t.value == "-") {cout << "LINE 209" << endl;}
                 }
             }
             else { // size of stack is 0, so gotta add this :)
@@ -274,9 +280,9 @@ int main() {
      ///FOR TESTING TOKENIZER
     printTokens(tokens);
 
-    printf("\n%d",isValidExpression(tokens));
-    printf("\n%d",isValidPostfix(tokens));
-    printf("\n%d",isValidInfix(tokens));
+    //printf("\n%d",isValidExpression(tokens));
+    //printf("\n%d",isValidPostfix(tokens));
+    //printf("\n%d",isValidInfix(tokens));
 
     return 0;
 }

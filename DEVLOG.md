@@ -55,3 +55,15 @@
 **What I tried:** Did not account for parens at end of input, and did not have a way to check for the previous operator being of higher precedence than current  
 **Fix / resolution (or final decision):** Added statement to initial operator check so that the precedence could be handled correctly, along with fixing the parens issue  
 **Commit(s):** 10
+
+---
+
+### Entry 6
+**Date:** 2026-03-31  
+**Entry Type:** Edge Case  
+**Task worked on:** infixToPostFix  
+**Issue or decision:** Failure to account for extra operators after checking previous operator  
+**Error message / symptom (if applicable):** Specific edge case where extra accounting for an op of high precedence would forget to recheck operator stack for other ops of the same precedence again -> 1 + 2 * 3 - 4 / 5   
+**What I tried:** Originally did not realize that there could be operators left after initial check  
+**Fix / resolution (or final decision):** Added a while loop to take care of any left over operators that violated the stack rules  
+**Commit(s):** 11
