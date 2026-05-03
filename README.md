@@ -1,67 +1,195 @@
-## How to Build and Run
-**Instructions:** Enter these two commands in the terminal to build and run the file.
-- `g++ -std=c++17 monopoly_board_S26_template_v2.cpp -o monopoly_board`
-- `./monopoly_board`
+
+
+# PA3: Maze Escape Using DFS  
+
+Starter Code README
+
+This project provides you with a randomly generated maze stored in a 2D matrix. Your job is to implement a recursive Depth-First Search (DFS) that determines whether there is a path from the entrance to the exit.
+
+The starter code already includes:
+1. Maze generation  
+2. Entrance and exit selection  
+3. Maze printing  
+4. Data structures for visited tracking  
+5. Data structures for tracking parent cells  
+6. A function to print the final reconstructed path  
+
+You must implement the DFS logic yourself.
 
 ---
 
-## Data Structure Used
-### Circular Linked List
-A circular linked list was used to link the monopoly spaces sequentially, where the tail node points to the head node.
-The linked list allows for easy manipulation of the board spaces and simple traversal of the player nodes.
-The linked list has a limit of 40 spaces on the board.
+## 1. Maze Representation
+
+The maze is stored in:
+
+```
+vector<vector<int>> maze;
+```
+
+Each cell contains:
+- `0` meaning the cell is open  
+- `1` meaning the cell is a wall  
+
+Movement is allowed only in four directions: up, right, down, left.
 
 ---
 
-## List Of Functions
-### `isEqual(MonopolySpace)`
-**Description:** Checks if two MonopolySpaces are equal by name
+## 2. Direction Arrays
 
-### `print()`
-**Description:** Prints out formatted MonopolySpace information
+```
+int dr[4] = {-1, 0, 1, 0};
+int dc[4] = {0, 1, 0, -1};
+```
 
-### `addSpace(T)`
-**Description:** Adds a MonopolySpace to the end of the circular linked list
+These arrays represent the change in row and column for each direction.
 
-### `isEmpty()`
-**Description:** Checks if the linked list is empty
-
-### `isFull()`
-**Description:** Checks if the linked list is full
-
-### `addMany(vector<T>)`
-**Description:** Takes a vector of MonopolySpaces and adds each element to the linked list
-
-### `movePlayer(int)`
-**Description:** Moves the player a certain number of steps down the linked list
-
-### `getPassGoCount()`
-**Description:** Checks how many times a player has passed GO
-
-### `printFromPlayer(int)`
-**Description:** Prints a certain number of MonopolySpaces ahead of the player
-
-### `printBoardOnce()`
-**Description:** Prints each MonopolySpace of the full board from GO
-
-### `removeByName(string)`
-**Description:** Searches for a MonopolySpace by its name, then removes it
-
-### `rescuePlayer(Node<T>)`
-**Description:** Moves the player to the next MonopolySpace if the current one it is on is going to get removed
-
-### `findByColor(string)`
-**Description:** Searches for MonopolySpaces with a color that matches the target, then returns a vector of those MonopolySpaces
-
-### `countSpaces()`
-**Description:** Traverses the linked lists and counts how many MonopolySpaces are stored
-
-### `clear()`
-**Description:** Traverses the linked list and deletes each node
+Index | Direction | dr | dc  
+---|---|---|---  
+0 | Up | -1 | 0  
+1 | Right | 0 | +1  
+2 | Down | +1 | 0  
+3 | Left | 0 | -1  
 
 ---
 
-## Traversal & Movement
-**Description:** A player moves starts at GO and moves throughout the board by rolling dice to determine step count.
-The player is able to move throughout the board via each node's next pointer, as the structure is a linked list.
-With the board being a circular linked list, when the player reaches the end of list, they move back to the start to GO.
+## 3. Entrance and Exit
+
+Two open boundary cells are randomly chosen:
+
+```
+pair<int,int> entrance;
+pair<int,int> exitcell;
+```
+
+They are extracted for convenience into:
+
+```
+int ent_r, ent_c;
+int exit_r, exit_c;
+```
+
+---
+
+## 4. Visited Array
+
+```
+vector<vector<bool>> visited(N, vector<bool>(M, false));
+```
+
+This tracks whether DFS has visited a cell.
+
+You must mark each visited cell in your DFS implementation.
+
+---
+
+## 5. Parent Tracking Arrays
+
+To reconstruct the path, the program provides:
+
+```
+vector<vector<int>> parent_r;   // row of parent cell
+vector<vector<int>> parent_c;   // column of parent cell
+```
+
+When DFS moves from `(r, c)` to `(nr, nc)` you must set:
+
+```
+parent_r[nr][nc] = r;
+parent_c[nr][nc] = c;
+```
+
+This allows the starter code to rebuild the path from exit to entrance.
+
+---
+
+## 6. Provided Functions (Do Not Modify)
+
+### **generateMaze(...)**  
+Creates the random maze.
+
+### **chooseBoundaryCell(...)**  
+Selects an open boundary cell for the entrance or exit.
+
+### **printMaze(...)**  
+Prints the maze with `S` marking the entrance and `E` marking the exit.
+
+### **printPath(...)**  
+Uses the parent arrays to reconstruct and print the full path from the entrance to the exit.
+
+---
+
+## 7. Your Task: Implement DFS
+
+You must implement:
+
+```
+bool dfs(int r, int c,
+         const vector<vector<int>>& maze,
+         vector<vector<bool>>& visited,
+         vector<vector<int>>& parent_r,
+         vector<vector<int>>& parent_c,
+         int exit_r, int exit_c);
+```
+
+Your DFS must handle the following:
+
+1. Out-of-bounds checks  
+2. Wall checks (`maze[r][c] == 1`)  
+3. Visited checks  
+4. Marking the current cell as visited  
+5. Checking if `(r, c)` is the exit  
+6. Exploring neighbors using `dr` and `dc`  
+7. Assigning the parent before recursing  
+8. Returning true when the exit is found  
+
+---
+
+## 8. Running DFS
+
+In `main()`, you will add:
+
+```cpp
+bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
+```
+
+---
+
+## 9. Final Output
+
+If DFS succeeds:
+
+```cpp
+printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+```
+
+Otherwise:
+
+```cpp
+cout << "\nNo path exists.\n";
+```
+
+---
+
+## 10. Summary of Variables
+
+Variable | Meaning
+---|---
+`maze` | The maze grid of 0s and 1s
+`visited` | Tracks which cells DFS has visited
+`parent_r`, `parent_c` | Store parent coordinates for path reconstruction
+`dr`, `dc` | Direction arrays for movement
+`entrance`, `exitcell` | Boundary start and end cells
+`ent_r`, `ent_c` | Entrance coordinates
+`exit_r`, `exit_c` | Exit coordinates
+`N`, `M` | Maze dimensions
+
+---
+
+## 11. What You Need to Submit
+
+Your submission must include:
+1. Your completed DFS implementation  
+2. Correct use of visited and parent arrays  
+3. A successful path printout when a path exists  
+
+Do not modify the maze generator or the provided print functions.
