@@ -114,7 +114,7 @@ void printPath(pair<int,int> exitcell,
 }
 
 bool isOutOfBounds(int r, int c, vector<vector<int>> maze) {
-    if (r < 0 || c < 0 || r > maze.size() || c > maze[r].size()) {
+    if (r < 0 || c < 0 || r >= maze.size() || c >= maze[r].size()) {
         return true;
     }
     return false;
@@ -142,8 +142,18 @@ bool dfs(int r, int c,
     visited[r][c] = true; // current path is viable until further notice
 
     for (int i = 0; i < 4; i++) { // iterate thru each direction, if not then give up
+        int nextR = r + dr[i];
+        int nextC = c + dr[i];
 
+        parR[nextR][nextC] = r;
+        parC[nextR][nextC] = c;
+
+        if (dfs(nextR,nextC,maze,visited,parR,parC,exR,exC)) {
+            return true;
+        }
     }
+
+    return false; // give up condition :(
 
 }
 
@@ -154,7 +164,7 @@ bool dfs(int r, int c,
 int main() {
     int N, M;
 
-    cout << "Enter maze dimensions N M: ";
+    cout << "Enter maze dimensions N M:\n";
     cin >> N >> M;
 
     vector<vector<int>> maze(N, vector<int>(M));
@@ -185,17 +195,17 @@ int main() {
     // STUDENT WORK:
     // Call your DFS, track visited, and fill parent_r and parent_c
     // ------------------------------------------------------
-    // bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
+     bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
 
     // ------------------------------------------------------
     // STUDENT WORK:
     // If found, print the path
     // ------------------------------------------------------
-    // if (found) {
-    //     printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
-    // } else {
-    //     cout << "\nNo path exists.\n";
-    // }
+     if (found) {
+         printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+     } else {
+         cout << "\nNo path exists.\n";
+     }
 
     return 0;
 }
