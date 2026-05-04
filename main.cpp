@@ -125,6 +125,8 @@ bool isOutOfBounds(int r, int c, vector<vector<int>> maze) {
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
 // is exit, validity, wall, visited
+// mark as visited
+// check neighbors
 bool dfs(int r, int c,
     vector<vector<int>> maze, vector<vector<bool>> visited,
     vector<vector<int>> parR, vector<vector<int>> parC,
@@ -133,14 +135,14 @@ bool dfs(int r, int c,
     if (r == exR && c == exC) {
         return true;
     }
-    if (isOutOfBounds(r,c,maze)) {
+    if (isOutOfBounds(r,c,maze) || maze[r][c] == 1 || visited[r][c]) {
         return false;
     }
-    if (maze[r][c] == 1) {
-        return false;
-    }
-    if (visited[r][c]) {
-        return false;
+
+    visited[r][c] = true; // current path is viable until further notice
+
+    for (int i = 0; i < 4; i++) { // iterate thru each direction, if not then give up
+
     }
 
 }
