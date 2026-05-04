@@ -124,11 +124,25 @@ bool isOutOfBounds(int r, int c, vector<vector<int>> maze) {
 // STUDENTS IMPLEMENT DFS HERE
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
-bool dfs(int entR, int entC,
+// is exit, validity, wall, visited
+bool dfs(int r, int c,
     vector<vector<int>> maze, vector<vector<bool>> visited,
     vector<vector<int>> parR, vector<vector<int>> parC,
     int exR, int exC) {
-    // Your code here
+
+    if (r == exR && c == exC) {
+        return true;
+    }
+    if (isOutOfBounds(r,c,maze)) {
+        return false;
+    }
+    if (maze[r][c] == 1) {
+        return false;
+    }
+    if (visited[r][c]) {
+        return false;
+    }
+
 }
 
 
