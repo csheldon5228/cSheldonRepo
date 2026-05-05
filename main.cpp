@@ -119,6 +119,16 @@ bool isOutOfBounds(int r, int c, vector<vector<int>> maze) {
     }
     return false;
 }
+void printVisited(vector<vector<bool>> visited) {
+    cout << "\nChecking visited" << endl;
+    for (int i = 0; i < visited.size(); i++) {
+        for (int j = 0; j < visited[i].size(); j++) {
+            cout << visited[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
 
 // ----------------------------------------------------------
 // STUDENTS IMPLEMENT DFS HERE
@@ -133,6 +143,7 @@ bool dfs(int r, int c,
     int exR, int exC) {
 
     if (r == exR && c == exC) {
+        cout << "\nfound exit" << endl;
         return true;
     }
     if (isOutOfBounds(r,c,maze) || maze[r][c] == 1 || visited[r][c]) {
@@ -141,16 +152,24 @@ bool dfs(int r, int c,
 
     visited[r][c] = true; // current path is viable until further notice
 
+    printVisited(visited);
+
     for (int i = 0; i < 4; i++) { // iterate thru each direction, if not then give up
         int nextR = r + dr[i];
-        int nextC = c + dr[i];
+        int nextC = c + dc[i];
 
-        parR[nextR][nextC] = r;
-        parC[nextR][nextC] = c;
+        cout << r << " " << c << " " << i << endl;
 
-        if (dfs(nextR,nextC,maze,visited,parR,parC,exR,exC)) {
-            return true;
+        if (!(isOutOfBounds(nextR, nextC, maze))) {
+            parR[nextR][nextC] = r;
+            parC[nextR][nextC] = c;
+
+            if (dfs(nextR,nextC,maze,visited,parR,parC,exR,exC)) {
+                return true;
+            }
         }
+
+
     }
 
     return false; // give up condition :(
